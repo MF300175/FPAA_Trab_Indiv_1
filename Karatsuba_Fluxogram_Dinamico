@@ -1,0 +1,33 @@
+digraph Karatsuba_Fluxogram_Dinamico {
+	rankdir=TB size=10
+	Start [label="Início" shape=oval]
+	DefineXY [label="Definir x=987654321 e y=123456789" shape=rectangle]
+	Check [label="x < 10 ou y < 10?
+(987654321 < 10 or 123456789 < 10?)" shape=diamond]
+	DirectMult [label="Multiplicação Direta:
+987654321 * 123456789" shape=rectangle]
+	CalcN [label="n = max(dígitos de 987654321, 123456789) = 9" shape=rectangle]
+	CalcM [label="m = 9 // 2 = 4" shape=rectangle]
+	DivideX [label="Dividir x => x_high=98765, x_low=4321" shape=rectangle]
+	DivideY [label="Dividir y => y_high=12345, y_low=6789" shape=rectangle]
+	RecZ0 [label="z0 = karatsuba(4321, 6789)" shape=rectangle]
+	RecZ1 [label="z1 = karatsuba((4321 + 98765), (6789 + 12345))" shape=rectangle]
+	RecZ2 [label="z2 = karatsuba(98765, 12345)" shape=rectangle]
+	Combine [label="Combinar: (z2 * 10^(2m)) + ((z1 - z2 - z0) * 10^m) + z0" shape=rectangle]
+	Return [label="Retornar resultado" shape=rectangle]
+	End [label=Fim shape=oval]
+	Start -> DefineXY
+	DefineXY -> Check
+	Check -> DirectMult [label=Sim]
+	DirectMult -> Return
+	Check -> CalcN [label="Não"]
+	CalcN -> CalcM
+	CalcM -> DivideX
+	DivideX -> DivideY
+	DivideY -> RecZ0
+	RecZ0 -> RecZ1
+	RecZ1 -> RecZ2
+	RecZ2 -> Combine
+	Combine -> Return
+	Return -> End
+}
